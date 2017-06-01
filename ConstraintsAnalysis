@@ -1,0 +1,140 @@
+import arcpy, os, errno
+
+# --------------------------------- SCRIPT  INFORMATION START ------------------------------- #
+
+# This script was created by Mursheed Drahman on 2017-05-08
+
+# It was created for use in Constraints Analyses for CanACRE.
+
+# The purpose of this script is to automate a majority of the output process, when given the
+# locations of all necessary constraints layers.
+
+# All inquiries for this script can be directed to mdrahman@canacre.com where I can
+# assist to the best of my ability 
+
+# --------------------------------- SCRIPT  INFORMATION  END  ------------------------------- #
+
+# =========================================================================================== #
+# ==================================== CUSTOMIZE SCRIPT HERE ================================ #
+# ====================== LOCATE DATA AND CHANGE OUTPUT LOCATION AND NAME ==================== #
+
+# -------------------------------------- CONSTANTS START ------------------------------------ #
+
+# absolute path to the feature class containing all image point data
+# WARNING: This file will be modified, backing up is suggested
+dataLocation = "C:\\Users\\drahmanm\\Desktop\\TEMPORARYGIS\\Umajans2014ImageLocations.mdb\\ImageLocation_2014_new_2"
+
+# ensure data is formatted correctly and includes the following headers in its attribute table:
+#        - IMAGENAME    (Filename of image including file extension)
+#        - SEGMENTID    (Unique identifier for segment)
+#        - GISID        (Unique identifier for section)
+#        - KM_SEGMENTID (Cumulative distance in km within the segment ID)
+#        - KM_GISID     (Cumulative distance in km within the GISID)
+#        - FACINGDIR    (Direction of image, either P or N)
+
+# absolute path to the folder where the logs will be saved
+errorLogLocation = "C:\\Users\\drahmanm\\Desktop\\TEMPORARYGIS\\"
+
+# name of error log produced in the above location
+errorLogName = "DistanceVerificationResults.csv"
+
+# -------------------------------------- CONSTANTS  END  ---------------------------------------- #
+
+# ================================ AVOID EDITS BELOW THIS LINE ================================== #
+# ====== EDITS BELOW THIS LINE MAY CAUSE THE SCRIPT TO STOP WORKING, EDIT AT YOUR OWN RISK ====== #
+# =============================================================================================== #
+
+# --------------------------------- METHOD DEFINITIONS START ------------------------------------ #
+
+# A method to create a directory at path only if it does not already exist.
+def ensure(path):
+    try:
+     os.makedirs(path)
+    except OSError as exception:
+     if exception.errno != errno.EEXIST:
+         raise
+
+# A specific method that will set up the headers for the CSV passed into it
+def csvInitiate(log):
+        log.write("ID,PrevImage,PrevValue,CurImage,CurValue\n")
+
+def analyze(ID, listTuples, log):
+    for i in range(len(listTuples)):
+        if i > 0:
+            if listTuples[i][1] < listTuples[i-1][1]:
+                log.write(str(ID)
+                          +","+listTuples[i-1][0]
+                          +","+str(listTuples[i-1][1])
+                          +","+listTuples[i][0]
+                          +","+str(listTuples[i][1])
+                          +"\n")    
+
+# --------------------------------- METHOD DEFINITIONS  END  ------------------------------------ #
+
+
+# ---------------------------------------- MAIN START ------------------------------------------- #
+
+print "The script is running..."
+print "Finding unique segment IDs..."
+
+posDictID = {}
+negDictID = {}
+with arcpy.da.SearchCursor(dataLocation,["SEGMENTID",             #0
+                                         "KM_SEGMENTID",          #1
+                                         "GISID",                 #2
+                                         "KM_GISID",              #3
+                                         "IMAGENAME",             #4
+                                         "FACINGDIR",             #5
+                                         "RECID"]) as cursor:     #6
+    
+     for row in cursor:
+         segID = row[0] #Assigns value of SEGMENTID to string
+         secID = row[2] #Assigns value of GISID to string
+
+         if row[5] == 'P' and segID in posDictID:
+             posDictID[segID].append((row[4],row[1]))
+         elif row[5] == 'N' and segID in negDictID:
+             negDictID[segID].append((row[4],row[1]))
+         elif row[5] == 'P':
+             posDictID[segID] = [(row[4],row[1])]
+         else:
+             negDictID[segID] = [(row[4],row[1])]
+
+         if row[5] == 'P' and secID in posDictID:
+             posDictID[segID].append((row[4],row[1]))
+         elif row[5] == 'N' and secID in negDictID:
+             negDictID[segID].append((row[4],row[1]))
+         elif row[5] == 'P':
+             posDictID[secID] = [(row[4],row[1])]
+         else:
+             negDictID[secID] = [(row[4],row[1])]
+             
+             
+print "Performing analyses..."
+
+ensure(errorLogLocation)
+errorLog = open(os.path.join(errorLogLocation, errorLogName), 'w')
+csvInitiate(errorLog)
+
+
+for i in posDictID:
+    posDictID[i].sort()
+    analyze(i,posDictID[i],errorLog)
+
+
+for i in negDictID:
+    negDictID[i].sort(reverse=True)
+    analyze(i,negDictID[i],errorLog)
+
+
+print "Done! \nView results at " + errorLogLocation + errorLogName    
+# Deletes cursor and row objects to remove locks on the data
+del row
+del cursor
+errorLog.close()
+# ---------------------------------------- MAIN  END  ------------------------------------------- #
+
+
+
+
+

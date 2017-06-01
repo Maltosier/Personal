@@ -1,0 +1,18 @@
+FEATURE,ZONING CONSTRAINTS,DATA PATH
+National Park,100ft,G:\arc_US_IL\DATA\BASEDATA\US_National_Park_Service\20170228_NPSUnitBoundaries\nps_boundary\nps_boundary.shp
+Pipelines,150ft,G:\MAPs\MXD\Map17_MXD\Map17-0111\ConstraintAnalysis_Leland_Mazon.gdb\Clipped\Pipeline_Clip
+Property Line,50ft,G:\Clients\NextEra_USA\Illinois\GEOSPATIAL_DATA\Illinois_MASTER\Illinois_MASTER.gdb\Parcels\Dekalb_Parcel_MASTER;G:\Clients\NextEra_USA\Illinois\GEOSPATIAL_DATA\Illinois_MASTER\Illinois_MASTER.gdb\Parcels\Grundy_Parcel_MASTER;G:\Clients\NextEra_USA\Illinois\GEOSPATIAL_DATA\Illinois_MASTER\Illinois_MASTER.gdb\Parcels\LaSalle_Parcel_MASTER
+Railway,50ft,G:\arc_US_IL\DATA\BASEDATA\US_Census_Bureau\20170228_Rails\tl_2016_us_rails\tl_2016_us_rails.shp
+Road,100ft,G:\arc_US_IL\DATA\BASEDATA\Illinois_Department_of_Transportation_(IDOT)\20170228_Roads\HWY2015\HWY2015.shp
+State Forest,100ft,G:\arc_US_IL\DATA\BASEDATA\Natural_Connections\20170307_StateConservationAreas\STCONSRV_poly_region.shp;G:\arc_US_IL\DATA\BASEDATA\Natural_Connections\20170307_NaturePreserves\NATPRES_poly_region.shp;G:\arc_US_IL\DATA\BASEDATA\Natural_Connections\20170307_NaturalAreas\natarea_region.shp
+State Park,100ft,G:\arc_US_IL\DATA\BASEDATA\Natural_Connections\20170307_StatePark\STPARKS_poly_region.shp
+State Wildlife Refuge,100ft,G:\arc_US_IL\DATA\BASEDATA\Natural_Connections\20170307_StateFishandWildlifeAreas\STFWA_poly_region.shp
+Transmission Lines,50ft,G:\MAPs\MXD\Map17_MXD\Map17-0111\Shapefile\IL_Transmission _Platts.gdb\Placemarks\Polylines
+Urban/Built-up Areas,Avoid,G:\arc_US_IL\DATA\BASEDATA\US_Census_Bureau\20170228_UrbanAreas\tl_2016_us_uac10\tl_2016_us_uac10.shp
+Well,200ft,G:\arc_US_IL\DATA\BASEDATA\US_Geological_Survey\20170228_NationalHydrographyDataset\NHD_H_17_GDB\NHD_H_17_GDB.gdb\Hydrography\NHDPoint
+Wetland,50ft,G:\arc_US_IL\DATA\BASEDATA\Illinois_Department_of_Natural_Resources\20170228_Wetlands\IL_NWI_Wetlands_1987\IL_NWI_Wetlands_1987_Py.shp
+Waterbody,50ft,G:\arc_US_IL\DATA\BASEDATA\US_Geological_Survey\20170228_NationalHydrographyDataset\NHD_H_17_GDB\NHD_H_17_GDB.gdb\Hydrography
+Watercourse,50ft,G:\arc_US_IL\DATA\BASEDATA\US_Geological_Survey\20170228_NationalHydrographyDataset\NHD_H_17_GDB\NHD_H_17_GDB.gdb\Hydrography
+Wooded Area,Avoid,G:\arc_US_IL\DATA\BASEDATA\US_Geological_Survey\20170306_Woodland\WOODLAND_17_Illinois_GU_STATEORTERRITORY.gdb\LandCover\LandCover_Woodland
+Slope,Avoid Slope 10% and greater,G:\arc_US_IL\DATA\BASEDATA\US_Geological_Survey\20170308_DEM
+National Wildlife Refuge,100ft,G:\arc_US_IL\DATA\BASEDATA\US_Fish_And_Wildlife_Service\20170228_RefugeSystem\FWSCadastral.gdb\FWSCadastral.gdb\FWSApproved
